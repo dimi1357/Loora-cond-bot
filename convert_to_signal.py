@@ -27,15 +27,16 @@ max_val = max(values)
 num_sig = len(signals_text)
 sig_size = len(values) // num_sig
 # start = [(min_val + (i+1) * size_sig) for i in range(num_sig-1)]
-values_sorted = sorted(values)
-thresholds = []
-for i in range(num_sig-1):
-    thresholds.append(values_sorted[sig_size*(i+1)])
-start = [0.0, 7.0]
-thresholds.append(10e8)
+# values_sorted = sorted(values)
+# thresholds = []
+# for i in range(num_sig-1):
+#     thresholds.append(values_sorted[sig_size*(i+1)])
+# start = [0.0, 7.0]
+# thresholds.append(10e8)
+thresholds = [0.0, 7.0, 10e8]
 print(thresholds)
 
-with open(f'{train_path.replace(".csv","")}_ready1.csv', 'w') as f:
+with open(f'{train_path.replace(".csv","")}_ready.csv', 'w') as f:
     csvWriter = csv.writer(f)
     csvWriter.writerow(["context", "target", "signal"])
     for context, target, value in zip(contexts, targets, values):
@@ -61,7 +62,7 @@ with open(test_path, 'r') as f:
         targets.append(target)
         values.append(float(grad))
 
-with open(f'{test_path.replace(".csv","")}_ready1.csv', 'w') as f:
+with open(f'{test_path.replace(".csv","")}_ready.csv', 'w') as f:
     csvWriter = csv.writer(f)
     csvWriter.writerow(["context", "target", "signal"])
     for context, target, value in zip(contexts, targets, values):
