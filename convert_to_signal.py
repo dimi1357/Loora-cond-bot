@@ -25,24 +25,25 @@ max_val = max(values)
 # import pdb; pdb.set_trace()
 
 num_sig = len(signals_text)
-size_sig = int((max_val - min_val) / num_sig)
+sig_size = len(values) // num_sig
 # start = [(min_val + (i+1) * size_sig) for i in range(num_sig-1)]
+values_sorted = sorted(values)
+thresholds = []
+for i in range(num_sig-1):
+    thresholds.append(values_sorted[sig_size*(i+1)])
 start = [0.0, 7.0]
+thresholds.append(10e8)
+print(thresholds)
 
-with open(f'{train_path.replace(".csv","")}_ready.csv', 'w') as f:
+with open(f'{train_path.replace(".csv","")}_ready1.csv', 'w') as f:
     csvWriter = csv.writer(f)
     csvWriter.writerow(["context", "target", "signal"])
     for context, target, value in zip(contexts, targets, values):
         # import pdb; pdb.set_trace()
-        top = start[0]
-        found = False
-        for i, top in enumerate(start):
+        for i, top in enumerate(thresholds):
             if value < top:
                 csvWriter.writerow([context, target, signals_text[i]])
-                found = True
                 break
-        if not found:
-            csvWriter.writerow([context, target, signals_text[-1]])
 
 
 contexts = []
@@ -60,17 +61,12 @@ with open(test_path, 'r') as f:
         targets.append(target)
         values.append(float(grad))
 
-with open(f'{test_path.replace(".csv","")}_ready.csv', 'w') as f:
+with open(f'{test_path.replace(".csv","")}_ready1.csv', 'w') as f:
     csvWriter = csv.writer(f)
     csvWriter.writerow(["context", "target", "signal"])
     for context, target, value in zip(contexts, targets, values):
         # import pdb; pdb.set_trace()
-        top = start[0]
-        found = False
-        for i, top in enumerate(start):
+        for i, top in enumerate(thresholds):
             if value < top:
                 csvWriter.writerow([context, target, signals_text[i]])
-                found = True
                 break
-        if not found:
-            csvWriter.writerow([context, target, signals_text[-1]])

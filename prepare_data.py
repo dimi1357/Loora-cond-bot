@@ -29,7 +29,7 @@ with open(out_path, 'w') as f:
         #inp = conv[0]
         #target = sep.join(convs[1:])
         for i in range(1,len(conv)):
-            context = f' {sep} '.join(conv[:i])
+            context = conv[i-1]
             target = conv[i]
             r = Readability(target) 
             # import pdb; pdb.set_trace()
